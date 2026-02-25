@@ -1,25 +1,55 @@
 # design-test
 
-This project is a simple design test website.
+iOS 26-inspired "Liquid Glass" marketing + ordering UI concept for a boutique cake shop.
 
-The main goal is to experiment with an iOS-style Liquid Glass UI (light and dark mode), not to build a full production app.
+This repo now contains two implementations:
 
-## Scope
+1. Legacy static prototype (`index.html`, `styles.css`, `app.js`)
+2. Refactored Next.js-style component architecture (`app/`, `components/`)
 
-- Visual design exploration (Liquid Glass look and feel)
-- Responsive layout testing (desktop and mobile)
-- Basic interactive UI behavior (theme toggle, form validation, micro animations)
+## What Was Added
 
-## Tech
+The refactor introduces a reusable, token-driven UI system focused on hierarchy, readability, consistency, and conversion:
 
-- `index.html`
-- `styles.css`
-- `app.js`
+- Theme tokens for light/dark mode (`app/tokens.css`)
+- Reusable `GlassCard` primitive with subtle highlight + noise overlay
+- Refactored sections: Header, Hero, Best Sellers, Custom Design, Info Chips, Start Order CTA
+- Mobile improvements:
+  - stacked hero CTAs
+  - horizontal snap Best Sellers
+  - floating WhatsApp button (desktop) + bottom bar (mobile)
+- Accessibility baseline:
+  - focus-visible styles
+  - keyboard-friendly controls
+  - improved text contrast and spacing rhythm
 
-No framework or build tool is used.
+## Key Files
 
-## Run locally
+- `app/tokens.css` - design tokens (radius, spacing, glass, shadows, theme values)
+- `app/globals.css` - global styles + component utility classes
+- `app/layout.tsx` - root layout and global CSS import
+- `app/page.tsx` - assembled home page
+- `components/GlassCard.tsx` - reusable liquid glass container
+- `components/Header.tsx`
+- `components/Hero.tsx`
+- `components/ProductCard.tsx`
+- `components/sections/*` - page sections
+
+## Tech Notes
+
+- Visual language: iOS-style Liquid Glass
+- Typography: SF Pro/system stack
+- Blur is capped (`--glass-blur: 12px`) for better performance
+- Shadow system uses only 2 levels (`--shadow-default`, `--shadow-hover`)
+
+## Running The Project
+
+### Static version
 
 Open `index.html` directly in your browser.
 
-That is all this repo is for: testing and polishing the Liquid Glass design direction.
+### Next.js-style version
+
+This repo currently includes UI code structure for Next.js (`app/` + `components/`), but no package/build setup was added yet.
+
+To run it as a real Next app, add the usual Next.js project scaffolding (`package.json`, `next`, `react`, `react-dom`, `tsconfig.json`, etc.), then run `next dev`.
