@@ -80,7 +80,7 @@ window.addEventListener("scroll", () => {
     return;
   }
   siteHeader.classList.toggle("is-scrolled", window.scrollY > 18);
-});
+}, { passive: true });
 
 if (tiltCard && !prefersReducedMotion) {
   tiltCard.addEventListener("pointermove", (event) => {
@@ -138,6 +138,7 @@ if (orderForm) {
   const phoneNumber = document.getElementById("phoneNumber");
   const eventDate = document.getElementById("eventDate");
   const cakeType = document.getElementById("cakeType");
+  const submitOrderBtn = document.getElementById("submitOrderBtn");
   const phonePattern = /^\+60\s1\d-\d{4}\s\d{3}$/;
 
   if (eventDate) {
@@ -146,6 +147,28 @@ if (orderForm) {
 
   const getErrorNode = (fieldName) =>
     orderForm.querySelector(`[data-error-for="${fieldName}"]`);
+
+  const formatPhoneInput = (rawValue) => {
+    let digits = rawValue.replace(/\D/g, "");
+    if (digits.startsWith("60")) {
+      digits = digits.slice(2);
+    }
+    if (digits.startsWith("0")) {
+      digits = digits.slice(1);
+    }
+    digits = digits.slice(0, 9);
+
+    if (digits.length === 0) {
+      return "";
+    }
+    if (digits.length <= 2) {
+      return `+60 ${digits}`;
+    }
+    if (digits.length <= 6) {
+      return `+60 ${digits.slice(0, 2)}-${digits.slice(2)}`;
+    }
+    return `+60 ${digits.slice(0, 2)}-${digits.slice(2, 6)} ${digits.slice(6)}`;
+  };
 
   const setFieldError = (field, message) => {
     if (!field) {
@@ -198,6 +221,33 @@ if (orderForm) {
     return isValid;
   };
 
+  const isFormReady = () => {
+    if (!fullName || !phoneNumber || !eventDate || !cakeType) {
+      return false;
+    }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = eventDate.value ? new Date(eventDate.value) : null;
+    return (
+      fullName.value.trim().length >= 2 &&
+      phonePattern.test(phoneNumber.value.trim()) &&
+      !!selectedDate &&
+      selectedDate >= today &&
+      !!cakeType.value
+    );
+  };
+
+  const syncSubmitState = () => {
+    if (!submitOrderBtn) {
+      return;
+    }
+    const ready = isFormReady();
+    submitOrderBtn.disabled = !ready;
+    submitOrderBtn.setAttribute("aria-disabled", ready ? "false" : "true");
+  };
+
+  syncSubmitState();
+
   ["input", "change", "blur"].forEach((eventName) => {
     orderForm.addEventListener(eventName, (event) => {
       const target = event.target;
@@ -208,6 +258,7 @@ if (orderForm) {
         setFieldError(target, target.value.trim().length >= 2 ? "" : "Please enter at least 2 characters.");
       }
       if (target.name === "phoneNumber") {
+        target.value = formatPhoneInput(target.value);
         setFieldError(target, phonePattern.test(target.value.trim()) ? "" : "Use format: +60 1X-XXXX XXX");
       }
       if (target.name === "eventDate") {
@@ -225,6 +276,7 @@ if (orderForm) {
       if (target.name === "cakeType") {
         setFieldError(target, target.value ? "" : "Please select a cake type.");
       }
+      syncSubmitState();
     });
   });
 
@@ -235,6 +287,17 @@ if (orderForm) {
     }
     orderForm.reset();
     [fullName, phoneNumber, eventDate, cakeType].forEach((field) => setFieldError(field, ""));
+    if (submitOrderBtn) {
+      submitOrderBtn.classList.add("is-sent");
+      submitOrderBtn.textContent = "Sent";
+      submitOrderBtn.disabled = true;
+      submitOrderBtn.setAttribute("aria-disabled", "true");
+      window.setTimeout(() => {
+        submitOrderBtn.classList.remove("is-sent");
+        submitOrderBtn.textContent = "Submit Order";
+        syncSubmitState();
+      }, 1100);
+    }
     showToast("Order request sent. We will contact you shortly.");
   });
 }

@@ -31,7 +31,7 @@
         <p>Liquid Glass Patisserie</p>
       </div>
     </div>
-    <nav>
+    <nav class="primary-nav">
       <a href="#menu">Menu</a>
       <a href="#signature">Signature</a>
       <a href="#order">Order</a>
@@ -122,15 +122,15 @@
 
     <section class="trust glass reveal" id="trust">
       <article>
-        <h3>Delivery Zones</h3>
+        <h3><span class="trust-icon" aria-hidden="true">&#128666;</span>Delivery Zones</h3>
         <p>Klang Valley, Putrajaya, and selected nearby areas.</p>
       </article>
       <article>
-        <h3>Lead Time</h3>
+        <h3><span class="trust-icon" aria-hidden="true">&#9201;</span>Lead Time</h3>
         <p>Standard cakes: 24-48 hours. Custom designs: 3-5 days.</p>
       </article>
       <article>
-        <h3>Certified Kitchen</h3>
+        <h3><span class="trust-icon" aria-hidden="true">&#10004;</span>Certified Kitchen</h3>
         <p>Clean-room process with premium ingredients and strict quality control.</p>
       </article>
       <a class="btn btn-soft whatsapp-btn" href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
@@ -163,7 +163,7 @@
           </select>
           <small class="field-error" data-error-for="cakeType"></small>
         </label>
-        <button type="submit" class="btn btn-main">Submit Order</button>
+        <button id="submitOrderBtn" type="submit" class="btn btn-main">Submit Order</button>
       </form>
     </section>
   </main>
