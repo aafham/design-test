@@ -7,6 +7,8 @@ const loader = document.getElementById("loader");
 const themeFade = document.getElementById("themeFade");
 const orderForm = document.getElementById("orderForm");
 const toast = document.getElementById("toast");
+const orderSection = document.getElementById("order");
+const mobileOrderCta = document.querySelector(".mobile-order-cta");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -120,6 +122,19 @@ if (prefersReducedMotion) {
     item.style.transitionDelay = `${index * 90}ms`;
     observer.observe(item);
   });
+}
+
+if (orderSection && mobileOrderCta) {
+  const ctaObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        mobileOrderCta.style.opacity = entry.isIntersecting ? "0" : "1";
+        mobileOrderCta.style.pointerEvents = entry.isIntersecting ? "none" : "auto";
+      });
+    },
+    { threshold: 0.2 }
+  );
+  ctaObserver.observe(orderSection);
 }
 
 const showToast = (message) => {

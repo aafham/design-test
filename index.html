@@ -54,7 +54,7 @@
       <div class="hero-copy">
         <p class="kicker">iOS 26 Liquid Glass Theme</p>
         <h1>Boutique cakes with luxury taste and fluid, luminous visuals.</h1>
-        <p>We craft premium cakes for birthdays, weddings, gift ceremonies, and dessert events with fully customized designs.</p>
+        <p>Premium cakes for birthdays, weddings, and custom celebrations.</p>
         <div class="hero-cta">
           <a class="btn btn-main btn-hero-main" href="#order">Order Now</a>
           <a class="btn btn-soft" href="#menu">View Collection</a>
@@ -117,7 +117,7 @@
         <h2>Custom cakes designed for your event theme</h2>
         <p>Choose flavors, colors, sizes, and styling. Our team prepares a mockup before baking so you can confirm the final design.</p>
       </div>
-      <a class="btn btn-main" href="#order">Request a Quote</a>
+      <a class="btn btn-main quote-btn" href="#order">Request a Quote</a>
     </section>
 
     <section class="trust glass reveal" id="trust">
@@ -139,7 +139,7 @@
     <section id="order" class="order glass reveal">
       <div class="section-head">
         <h2>Order Form</h2>
-        <p>Fill in the details and we will contact you within 1-2 hours.</p>
+        <p>Fill in the details and we will contact you within 1-2 hours. Typical replies within 1 hour.</p>
       </div>
       <form id="orderForm" novalidate>
         <label for="fullName">Full Name
@@ -148,6 +148,7 @@
         </label>
         <label for="phoneNumber">Phone Number
           <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="+60 1X-XXXX XXX" required />
+          <small class="field-hint">Format: +60 1X-XXXX XXX</small>
           <small class="field-error" data-error-for="phoneNumber"></small>
         </label>
         <label for="eventDate">Event Date
@@ -168,6 +169,7 @@
     </section>
   </main>
 
+  <a class="mobile-order-cta btn btn-main" href="#order">Order Now</a>
   <div class="toast" id="toast" role="status" aria-live="polite">Order request sent. We will contact you shortly.</div>
   <script src="app.js"></script>
 </body>
