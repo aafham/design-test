@@ -23,7 +23,7 @@
   <div class="ambient ambient-b"></div>
   <div class="ambient ambient-c"></div>
 
-  <header class="topbar glass reveal">
+  <header class="topbar glass reveal" id="siteHeader">
     <div class="brand">
       <span class="brand-core"></span>
       <div>
@@ -56,7 +56,7 @@
         <h1>Boutique cakes with luxury taste and fluid, luminous visuals.</h1>
         <p>We craft premium cakes for birthdays, weddings, gift ceremonies, and dessert events with fully customized designs.</p>
         <div class="hero-cta">
-          <a class="btn btn-main" href="#order">Order Now</a>
+          <a class="btn btn-main btn-hero-main" href="#order">Order Now</a>
           <a class="btn btn-soft" href="#menu">View Collection</a>
         </div>
         <div class="stats">
@@ -73,7 +73,7 @@
 
       <div class="feature-card glass" id="tiltCard">
         <div class="shine"></div>
-        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1100&q=80" alt="Signature cake" />
+        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1100&q=80" alt="Signature cake" width="1100" height="1100" decoding="async" />
         <div class="feature-meta">
           <div>
             <small>Signature Drop</small>
@@ -91,19 +91,19 @@
       </div>
       <div class="menu-grid">
         <article class="cake glass mini-liquid">
-          <img src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=700&q=80" alt="Strawberry Velvet" />
+          <img src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=700&q=80" alt="Strawberry Velvet" width="700" height="525" loading="lazy" decoding="async" />
           <h3>Strawberry Velvet</h3>
           <p>Vanilla sponge, strawberry confit, and cream cheese frosting.</p>
           <div><span>RM 98</span><small>Popular</small></div>
         </article>
         <article class="cake glass mini-liquid">
-          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" alt="Midnight Choco" />
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" alt="Midnight Choco" width="700" height="525" loading="lazy" decoding="async" />
           <h3>Midnight Choco</h3>
           <p>Dark cocoa sponge, Belgian ganache, and sea salt finish.</p>
           <div><span>RM 110</span><small>Chef Pick</small></div>
         </article>
         <article class="cake glass mini-liquid">
-          <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=80" alt="Lemon Snow" />
+          <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=80" alt="Lemon Snow" width="700" height="525" loading="lazy" decoding="async" />
           <h3>Lemon Snow</h3>
           <p>Lemon curd, whipped meringue, and citrus zest glaze.</p>
           <div><span>RM 92</span><small>Fresh</small></div>
@@ -120,34 +120,55 @@
       <a class="btn btn-main" href="#order">Request a Quote</a>
     </section>
 
+    <section class="trust glass reveal" id="trust">
+      <article>
+        <h3>Delivery Zones</h3>
+        <p>Klang Valley, Putrajaya, and selected nearby areas.</p>
+      </article>
+      <article>
+        <h3>Lead Time</h3>
+        <p>Standard cakes: 24-48 hours. Custom designs: 3-5 days.</p>
+      </article>
+      <article>
+        <h3>Certified Kitchen</h3>
+        <p>Clean-room process with premium ingredients and strict quality control.</p>
+      </article>
+      <a class="btn btn-soft whatsapp-btn" href="https://wa.me/60123456789" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+    </section>
+
     <section id="order" class="order glass reveal">
       <div class="section-head">
         <h2>Order Form</h2>
         <p>Fill in the details and we will contact you within 1-2 hours.</p>
       </div>
-      <form>
-        <label>Full Name
-          <input type="text" placeholder="Your full name" />
+      <form id="orderForm" novalidate>
+        <label for="fullName">Full Name
+          <input id="fullName" name="fullName" type="text" placeholder="Your full name" required minlength="2" />
+          <small class="field-error" data-error-for="fullName"></small>
         </label>
-        <label>Phone Number
-          <input type="tel" placeholder="+60 1X-XXXX XXX" />
+        <label for="phoneNumber">Phone Number
+          <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="+60 1X-XXXX XXX" required />
+          <small class="field-error" data-error-for="phoneNumber"></small>
         </label>
-        <label>Event Date
-          <input type="date" />
+        <label for="eventDate">Event Date
+          <input id="eventDate" name="eventDate" type="date" required />
+          <small class="field-error" data-error-for="eventDate"></small>
         </label>
-        <label>Cake Type
-          <select>
+        <label for="cakeType">Cake Type
+          <select id="cakeType" name="cakeType" required>
             <option>Birthday Cake</option>
             <option>Wedding Cake</option>
             <option>Gift Ceremony Cake</option>
             <option>Cupcake Set</option>
           </select>
+          <small class="field-error" data-error-for="cakeType"></small>
         </label>
-        <button type="button" class="btn btn-main">Submit Order</button>
+        <button type="submit" class="btn btn-main">Submit Order</button>
       </form>
     </section>
   </main>
 
+  <div class="toast" id="toast" role="status" aria-live="polite">Order request sent. We will contact you shortly.</div>
   <script src="app.js"></script>
 </body>
 </html>
