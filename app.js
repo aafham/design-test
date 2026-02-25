@@ -3,20 +3,17 @@ const siteHeader = document.getElementById("siteHeader");
 const tiltCard = document.getElementById("tiltCard");
 const reveals = document.querySelectorAll(".reveal");
 const toggle = document.getElementById("themeToggle");
-const loader = document.getElementById("loader");
-const themeFade = document.getElementById("themeFade");
 const orderForm = document.getElementById("orderForm");
 const toast = document.getElementById("toast");
 const orderSection = document.getElementById("order");
-const mobileOrderCta = document.querySelector(".mobile-order-cta");
+const whatsappFloat = document.getElementById("whatsappFloat");
+const whatsappMobile = document.getElementById("whatsappMobile");
+const navLinks = document.querySelectorAll('.primary-nav a[href^="#"]');
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let isOrderSectionVisible = false;
-let isOrderFieldFocused = false;
-let toastTimerId = null;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-const getPreferredTheme = () => {
+const getInitialTheme = () => {
   const saved = localStorage.getItem("theme");
   if (saved === "dark" || saved === "light") {
     return saved;
@@ -27,35 +24,17 @@ const getPreferredTheme = () => {
 const applyTheme = (theme) => {
   root.setAttribute("data-theme", theme);
   if (toggle) {
-    const isDark = theme === "dark";
-    toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
-    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    const checked = theme === "dark";
+    toggle.setAttribute("aria-checked", checked ? "true" : "false");
   }
 };
 
-const playThemeTransition = (nextTheme) => {
-  if (!themeFade || prefersReducedMotion) {
-    applyTheme(nextTheme);
-    return;
-  }
-
-  themeFade.classList.add("is-active");
-
-  window.setTimeout(() => {
-    applyTheme(nextTheme);
-  }, 120);
-
-  window.setTimeout(() => {
-    themeFade.classList.remove("is-active");
-  }, 380);
-};
-
-applyTheme(getPreferredTheme());
+applyTheme(getInitialTheme());
 
 if (toggle) {
   toggle.addEventListener("click", () => {
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    playThemeTransition(next);
+    applyTheme(next);
     localStorage.setItem("theme", next);
   });
 }
@@ -80,12 +59,16 @@ if (!prefersReducedMotion) {
   });
 }
 
-window.addEventListener("scroll", () => {
-  if (!siteHeader) {
-    return;
-  }
-  siteHeader.classList.toggle("is-scrolled", window.scrollY > 18);
-}, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!siteHeader) {
+      return;
+    }
+    siteHeader.classList.toggle("is-scrolled", window.scrollY > 12);
+  },
+  { passive: true }
+);
 
 if (tiltCard && !prefersReducedMotion) {
   tiltCard.addEventListener("pointermove", (event) => {
@@ -93,97 +76,128 @@ if (tiltCard && !prefersReducedMotion) {
     const x = event.clientX - box.left;
     const y = event.clientY - box.top;
 
-    const rotateY = clamp((x / box.width - 0.5) * 10, -5, 5);
-    const rotateX = clamp((0.5 - y / box.height) * 10, -5, 5);
-
-    tiltCard.style.transform = `perspective(920px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    const rotateY = clamp((x / box.width - 0.5) * 8, -4, 4);
+    const rotateX = clamp((0.5 - y / box.height) * 8, -4, 4);
+    tiltCard.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
   tiltCard.addEventListener("pointerleave", () => {
-    tiltCard.style.transform = "perspective(920px) rotateX(0deg) rotateY(0deg)";
+    tiltCard.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
   });
 }
 
 if (prefersReducedMotion) {
   reveals.forEach((item) => item.classList.add("is-visible"));
 } else {
-  const observer = new IntersectionObserver(
+  const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
     },
-    {
-      threshold: 0.15
-    }
+    { threshold: 0.12 }
   );
-
-  reveals.forEach((item, index) => {
-    item.style.transitionDelay = `${index * 90}ms`;
-    observer.observe(item);
-  });
+  reveals.forEach((item) => revealObserver.observe(item));
 }
 
-const isMobileViewport = () => window.matchMedia("(max-width: 680px)").matches;
-
-const getMobileCtaOffset = () => {
-  if (!mobileOrderCta || !isMobileViewport()) {
-    return 0;
-  }
-  const computed = window.getComputedStyle(mobileOrderCta);
-  if (computed.display === "none" || computed.opacity === "0") {
-    return 0;
-  }
-  return Math.ceil(mobileOrderCta.getBoundingClientRect().height + 16);
+const scrollToWithOffset = (target) => {
+  const headerOffset = siteHeader ? siteHeader.offsetHeight + 16 : 96;
+  const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+  window.scrollTo({ top, behavior: prefersReducedMotion ? "auto" : "smooth" });
 };
 
-const syncMobileCtaVisibility = () => {
-  if (!mobileOrderCta) {
-    return;
+navLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const id = link.getAttribute("href");
+    if (!id) {
+      return;
+    }
+    const section = document.querySelector(id);
+    if (!section) {
+      return;
+    }
+    event.preventDefault();
+    scrollToWithOffset(section);
+    history.replaceState(null, "", id);
+  });
+});
+
+if (navLinks.length > 0) {
+  const sectionMap = Array.from(navLinks)
+    .map((link) => {
+      const id = link.getAttribute("href");
+      if (!id) {
+        return null;
+      }
+      const section = document.querySelector(id);
+      if (!section) {
+        return null;
+      }
+      return { id, link, section };
+    })
+    .filter(Boolean);
+
+  const setActive = (id) => {
+    navLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.getAttribute("href") === id);
+    });
+  };
+
+  if (sectionMap.length > 0) {
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          const id = `#${visible[0].target.id}`;
+          setActive(id);
+        }
+      },
+      {
+        rootMargin: "-34% 0px -54% 0px",
+        threshold: [0.2, 0.4, 0.6]
+      }
+    );
+
+    sectionMap.forEach((item) => navObserver.observe(item.section));
   }
-  const shouldHide = isOrderSectionVisible || isOrderFieldFocused;
-  mobileOrderCta.style.opacity = shouldHide ? "0" : "1";
-  mobileOrderCta.style.pointerEvents = shouldHide ? "none" : "auto";
-  if (toast && toast.classList.contains("is-visible")) {
-    root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
-  }
+}
+
+const setWhatsAppHidden = (hidden) => {
+  [whatsappFloat, whatsappMobile].forEach((node) => {
+    if (!node) {
+      return;
+    }
+    node.classList.toggle("wa-hidden", hidden);
+  });
 };
 
-if (orderSection && mobileOrderCta) {
-  const ctaObserver = new IntersectionObserver(
+if (orderSection) {
+  const waObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        isOrderSectionVisible = entry.isIntersecting;
-        syncMobileCtaVisibility();
+        setWhatsAppHidden(entry.isIntersecting);
       });
     },
     { threshold: 0.2 }
   );
-  ctaObserver.observe(orderSection);
-}
-
-if (mobileOrderCta) {
-  syncMobileCtaVisibility();
+  waObserver.observe(orderSection);
 }
 
 const showToast = (message) => {
   if (!toast) {
     return;
   }
-  if (toastTimerId) {
-    window.clearTimeout(toastTimerId);
-  }
-  root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
   toast.textContent = message;
   toast.classList.add("is-visible");
-  toastTimerId = window.setTimeout(() => {
+  window.setTimeout(() => {
     toast.classList.remove("is-visible");
-    root.style.setProperty("--toast-shift", "0px");
-    toastTimerId = null;
-  }, 2400);
+  }, 2300);
 };
 
 if (orderForm) {
@@ -194,46 +208,22 @@ if (orderForm) {
   const submitOrderBtn = document.getElementById("submitOrderBtn");
   const phonePattern = /^\+60\s1\d-\d{4}\s\d{3}$/;
 
-  if (mobileOrderCta) {
-    orderForm.addEventListener("focusin", (event) => {
-      const target = event.target;
-      if (
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLSelectElement ||
-        target instanceof HTMLTextAreaElement
-      ) {
-        isOrderFieldFocused = true;
-        syncMobileCtaVisibility();
-      }
-    });
-
-    orderForm.addEventListener("focusout", () => {
-      window.setTimeout(() => {
-        const active = document.activeElement;
-        isOrderFieldFocused = !!(
-          active &&
-          orderForm.contains(active) &&
-          (active instanceof HTMLInputElement ||
-            active instanceof HTMLSelectElement ||
-            active instanceof HTMLTextAreaElement)
-        );
-        syncMobileCtaVisibility();
-      }, 0);
-    });
-
-    window.addEventListener("resize", () => {
-      if (toast && toast.classList.contains("is-visible")) {
-        root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
-      }
-    }, { passive: true });
-  }
-
   if (eventDate) {
     eventDate.min = new Date().toISOString().split("T")[0];
   }
 
-  const getErrorNode = (fieldName) =>
-    orderForm.querySelector(`[data-error-for="${fieldName}"]`);
+  const getErrorNode = (fieldName) => orderForm.querySelector(`[data-error-for="${fieldName}"]`);
+
+  const setFieldError = (field, message) => {
+    if (!field) {
+      return;
+    }
+    field.setAttribute("aria-invalid", message ? "true" : "false");
+    const node = getErrorNode(field.name);
+    if (node) {
+      node.textContent = message || "";
+    }
+  };
 
   const formatPhoneInput = (rawValue) => {
     let digits = rawValue.replace(/\D/g, "");
@@ -255,17 +245,6 @@ if (orderForm) {
       return `+60 ${digits.slice(0, 2)}-${digits.slice(2)}`;
     }
     return `+60 ${digits.slice(0, 2)}-${digits.slice(2, 6)} ${digits.slice(6)}`;
-  };
-
-  const setFieldError = (field, message) => {
-    if (!field) {
-      return;
-    }
-    field.setAttribute("aria-invalid", message ? "true" : "false");
-    const node = getErrorNode(field.name);
-    if (node) {
-      node.textContent = message || "";
-    }
   };
 
   const validate = () => {
@@ -341,13 +320,16 @@ if (orderForm) {
       if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) {
         return;
       }
+
       if (target.name === "fullName") {
         setFieldError(target, target.value.trim().length >= 2 ? "" : "Please enter at least 2 characters.");
       }
+
       if (target.name === "phoneNumber") {
         target.value = formatPhoneInput(target.value);
         setFieldError(target, phonePattern.test(target.value.trim()) ? "" : "Use format: +60 1X-XXXX XXX");
       }
+
       if (target.name === "eventDate") {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -360,9 +342,11 @@ if (orderForm) {
           setFieldError(target, "");
         }
       }
+
       if (target.name === "cakeType") {
         setFieldError(target, target.value ? "" : "Please select a cake type.");
       }
+
       syncSubmitState();
     });
   });
@@ -372,27 +356,10 @@ if (orderForm) {
     if (!validate()) {
       return;
     }
+
     orderForm.reset();
     [fullName, phoneNumber, eventDate, cakeType].forEach((field) => setFieldError(field, ""));
-    if (submitOrderBtn) {
-      submitOrderBtn.classList.add("is-sent");
-      submitOrderBtn.textContent = "Sent";
-      submitOrderBtn.disabled = true;
-      submitOrderBtn.setAttribute("aria-disabled", "true");
-      window.setTimeout(() => {
-        submitOrderBtn.classList.remove("is-sent");
-        submitOrderBtn.textContent = "Submit Order";
-        syncSubmitState();
-      }, 1100);
-    }
     showToast("Order request sent. We will contact you shortly.");
+    syncSubmitState();
   });
 }
-
-window.addEventListener("load", () => {
-  window.setTimeout(() => {
-    if (loader) {
-      loader.classList.add("is-hidden");
-    }
-  }, prefersReducedMotion ? 160 : 800);
-});
