@@ -780,11 +780,12 @@ html[data-theme="dark"] .switch-thumb {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(220px, 260px);
   gap: var(--s-16);
-  align-items: end;
+  align-items: start;
 }
 
 .order label {
   display: grid;
+  grid-template-rows: auto minmax(52px, auto) 1.1em;
   gap: var(--s-6);
   color: color-mix(in srgb, var(--text) 70%, var(--muted));
   font-size: 0.86rem;
@@ -827,10 +828,7 @@ html[data-theme="dark"] .switch-thumb {
 }
 
 .field-hint {
-  font-size: 0.75rem;
-  color: var(--muted);
-  min-height: 1.1em;
-  line-height: 1.2;
+  display: none;
 }
 
 .order input[aria-invalid="true"],
@@ -840,7 +838,8 @@ html[data-theme="dark"] .switch-thumb {
 }
 
 #submitOrderBtn {
-  align-self: end;
+  align-self: start;
+  margin-top: calc(1.15em + var(--s-6));
   width: 100%;
   min-height: 52px;
   font-size: 1.03rem;
@@ -1151,6 +1150,10 @@ html[data-theme="dark"] .field-hint {
     gap: 10px;
   }
 
+  .order label {
+    grid-template-rows: auto minmax(46px, auto) 1.1em;
+  }
+
   .order input,
   .order select,
   #submitOrderBtn {
@@ -1158,6 +1161,7 @@ html[data-theme="dark"] .field-hint {
   }
 
   #submitOrderBtn {
+    margin-top: calc(1.1em + var(--s-6));
     font-size: 0.95rem;
   }
 }
