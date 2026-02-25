@@ -3,6 +3,7 @@ const tiltCard = document.getElementById("tiltCard");
 const reveals = document.querySelectorAll(".reveal");
 const toggle = document.getElementById("themeToggle");
 const loader = document.getElementById("loader");
+const themeFade = document.getElementById("themeFade");
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -21,12 +22,29 @@ const applyTheme = (theme) => {
   }
 };
 
+const playThemeTransition = (nextTheme) => {
+  if (!themeFade) {
+    applyTheme(nextTheme);
+    return;
+  }
+
+  themeFade.classList.add("is-active");
+
+  window.setTimeout(() => {
+    applyTheme(nextTheme);
+  }, 105);
+
+  window.setTimeout(() => {
+    themeFade.classList.remove("is-active");
+  }, 365);
+};
+
 applyTheme(getPreferredTheme());
 
 if (toggle) {
   toggle.addEventListener("click", () => {
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    applyTheme(next);
+    playThemeTransition(next);
     localStorage.setItem("theme", next);
   });
 }
