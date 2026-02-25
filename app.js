@@ -10,6 +10,9 @@ const toast = document.getElementById("toast");
 const orderSection = document.getElementById("order");
 const mobileOrderCta = document.querySelector(".mobile-order-cta");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let isOrderSectionVisible = false;
+let isOrderFieldFocused = false;
+let toastTimerId = null;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -124,12 +127,37 @@ if (prefersReducedMotion) {
   });
 }
 
+const isMobileViewport = () => window.matchMedia("(max-width: 680px)").matches;
+
+const getMobileCtaOffset = () => {
+  if (!mobileOrderCta || !isMobileViewport()) {
+    return 0;
+  }
+  const computed = window.getComputedStyle(mobileOrderCta);
+  if (computed.display === "none" || computed.opacity === "0") {
+    return 0;
+  }
+  return Math.ceil(mobileOrderCta.getBoundingClientRect().height + 16);
+};
+
+const syncMobileCtaVisibility = () => {
+  if (!mobileOrderCta) {
+    return;
+  }
+  const shouldHide = isOrderSectionVisible || isOrderFieldFocused;
+  mobileOrderCta.style.opacity = shouldHide ? "0" : "1";
+  mobileOrderCta.style.pointerEvents = shouldHide ? "none" : "auto";
+  if (toast && toast.classList.contains("is-visible")) {
+    root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
+  }
+};
+
 if (orderSection && mobileOrderCta) {
   const ctaObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        mobileOrderCta.style.opacity = entry.isIntersecting ? "0" : "1";
-        mobileOrderCta.style.pointerEvents = entry.isIntersecting ? "none" : "auto";
+        isOrderSectionVisible = entry.isIntersecting;
+        syncMobileCtaVisibility();
       });
     },
     { threshold: 0.2 }
@@ -137,14 +165,24 @@ if (orderSection && mobileOrderCta) {
   ctaObserver.observe(orderSection);
 }
 
+if (mobileOrderCta) {
+  syncMobileCtaVisibility();
+}
+
 const showToast = (message) => {
   if (!toast) {
     return;
   }
+  if (toastTimerId) {
+    window.clearTimeout(toastTimerId);
+  }
+  root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
   toast.textContent = message;
   toast.classList.add("is-visible");
-  window.setTimeout(() => {
+  toastTimerId = window.setTimeout(() => {
     toast.classList.remove("is-visible");
+    root.style.setProperty("--toast-shift", "0px");
+    toastTimerId = null;
   }, 2400);
 };
 
@@ -155,6 +193,40 @@ if (orderForm) {
   const cakeType = document.getElementById("cakeType");
   const submitOrderBtn = document.getElementById("submitOrderBtn");
   const phonePattern = /^\+60\s1\d-\d{4}\s\d{3}$/;
+
+  if (mobileOrderCta) {
+    orderForm.addEventListener("focusin", (event) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLSelectElement ||
+        target instanceof HTMLTextAreaElement
+      ) {
+        isOrderFieldFocused = true;
+        syncMobileCtaVisibility();
+      }
+    });
+
+    orderForm.addEventListener("focusout", () => {
+      window.setTimeout(() => {
+        const active = document.activeElement;
+        isOrderFieldFocused = !!(
+          active &&
+          orderForm.contains(active) &&
+          (active instanceof HTMLInputElement ||
+            active instanceof HTMLSelectElement ||
+            active instanceof HTMLTextAreaElement)
+        );
+        syncMobileCtaVisibility();
+      }, 0);
+    });
+
+    window.addEventListener("resize", () => {
+      if (toast && toast.classList.contains("is-visible")) {
+        root.style.setProperty("--toast-shift", `${getMobileCtaOffset()}px`);
+      }
+    }, { passive: true });
+  }
 
   if (eventDate) {
     eventDate.min = new Date().toISOString().split("T")[0];
