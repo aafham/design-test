@@ -1,8 +1,35 @@
 const root = document.documentElement;
 const tiltCard = document.getElementById("tiltCard");
 const reveals = document.querySelectorAll(".reveal");
+const toggle = document.getElementById("themeToggle");
+const loader = document.getElementById("loader");
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const getPreferredTheme = () => {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark" || saved === "light") {
+    return saved;
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
+
+const applyTheme = (theme) => {
+  root.setAttribute("data-theme", theme);
+  if (toggle) {
+    toggle.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+  }
+};
+
+applyTheme(getPreferredTheme());
+
+if (toggle) {
+  toggle.addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next);
+    localStorage.setItem("theme", next);
+  });
+}
 
 window.addEventListener("pointermove", (event) => {
   const x = (event.clientX / window.innerWidth) * 100;
@@ -45,4 +72,12 @@ const observer = new IntersectionObserver(
 reveals.forEach((item, index) => {
   item.style.transitionDelay = `${index * 90}ms`;
   observer.observe(item);
+});
+
+window.addEventListener("load", () => {
+  window.setTimeout(() => {
+    if (loader) {
+      loader.classList.add("is-hidden");
+    }
+  }, 1200);
 });

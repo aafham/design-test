@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ms">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,13 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="loader" id="loader">
+    <div class="loader-orb"></div>
+    <p>Cloud Cake Atelier</p>
+    <span>Liquid Glass Experience</span>
+    <div class="loader-bar"><i></i></div>
+  </div>
+
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
   <div class="ambient ambient-c"></div>
@@ -25,36 +32,39 @@
     <nav>
       <a href="#menu">Menu</a>
       <a href="#signature">Signature</a>
-      <a href="#order">Tempah</a>
+      <a href="#order">Order</a>
     </nav>
-    <button class="chip">Open 10AM-9PM</button>
+    <div class="top-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">Dark Mode</button>
+      <button class="chip">Open 10AM-9PM</button>
+    </div>
   </header>
 
   <main>
     <section class="hero glass reveal" id="hero">
       <div class="hero-copy">
         <p class="kicker">iOS 26 Liquid Glass Theme</p>
-        <h1>Cake butik dengan rasa luxury dan visual cair berkilau.</h1>
-        <p>Kami hasilkan cake premium untuk birthday, wedding, hantaran, dan dessert event dengan custom design penuh.</p>
+        <h1>Boutique cakes with luxury taste and fluid, luminous visuals.</h1>
+        <p>We craft premium cakes for birthdays, weddings, gift ceremonies, and dessert events with fully customized designs.</p>
         <div class="hero-cta">
-          <a class="btn btn-main" href="#order">Tempah Sekarang</a>
-          <a class="btn btn-soft" href="#menu">Lihat Koleksi</a>
+          <a class="btn btn-main" href="#order">Order Now</a>
+          <a class="btn btn-soft" href="#menu">View Collection</a>
         </div>
         <div class="stats">
           <article class="stat glass mini-liquid">
             <strong>4.9/5</strong>
-            <span>Rating pelanggan</span>
+            <span>Customer rating</span>
           </article>
           <article class="stat glass mini-liquid">
             <strong>1,200+</strong>
-            <span>Tempahan selesai</span>
+            <span>Orders completed</span>
           </article>
         </div>
       </div>
 
       <div class="feature-card glass" id="tiltCard">
         <div class="shine"></div>
-        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1100&q=80" alt="Cake signature" />
+        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1100&q=80" alt="Signature cake" />
         <div class="feature-meta">
           <div>
             <small>Signature Drop</small>
@@ -67,26 +77,26 @@
 
     <section id="menu" class="menu reveal">
       <div class="section-head">
-        <h2>Best Seller</h2>
-        <p>Rekaan minimal, rasa balanced, finish premium.</p>
+        <h2>Best Sellers</h2>
+        <p>Minimal design, balanced flavor, premium finish.</p>
       </div>
       <div class="menu-grid">
         <article class="cake glass mini-liquid">
           <img src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=700&q=80" alt="Strawberry Velvet" />
           <h3>Strawberry Velvet</h3>
-          <p>Vanilla sponge, strawberry confit, cream cheese frosting.</p>
+          <p>Vanilla sponge, strawberry confit, and cream cheese frosting.</p>
           <div><span>RM 98</span><small>Popular</small></div>
         </article>
         <article class="cake glass mini-liquid">
           <img src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?auto=format&fit=crop&w=700&q=80" alt="Midnight Choco" />
           <h3>Midnight Choco</h3>
-          <p>Dark cocoa sponge, belgian ganache, sea salt finish.</p>
+          <p>Dark cocoa sponge, Belgian ganache, and sea salt finish.</p>
           <div><span>RM 110</span><small>Chef Pick</small></div>
         </article>
         <article class="cake glass mini-liquid">
           <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=80" alt="Lemon Snow" />
           <h3>Lemon Snow</h3>
-          <p>Lemon curd, whipped meringue, citrus zest glaze.</p>
+          <p>Lemon curd, whipped meringue, and citrus zest glaze.</p>
           <div><span>RM 92</span><small>Fresh</small></div>
         </article>
       </div>
@@ -95,36 +105,36 @@
     <section id="signature" class="signature glass reveal">
       <div>
         <p class="kicker">Custom Design</p>
-        <h2>Custom Cake ikut tema event anda</h2>
-        <p>Pilih flavor, warna, saiz, dan style. Team kami setup mockup sebelum baking untuk confirm design.</p>
+        <h2>Custom cakes designed for your event theme</h2>
+        <p>Choose flavors, colors, sizes, and styling. Our team prepares a mockup before baking so you can confirm the final design.</p>
       </div>
-      <a class="btn btn-main" href="#order">Request Quotation</a>
+      <a class="btn btn-main" href="#order">Request a Quote</a>
     </section>
 
     <section id="order" class="order glass reveal">
       <div class="section-head">
-        <h2>Borang Tempahan</h2>
-        <p>Isi detail ringkas, kami akan contact semula dalam 1-2 jam.</p>
+        <h2>Order Form</h2>
+        <p>Fill in the details and we will contact you within 1-2 hours.</p>
       </div>
       <form>
-        <label>Nama
-          <input type="text" placeholder="Nama penuh" />
+        <label>Full Name
+          <input type="text" placeholder="Your full name" />
         </label>
-        <label>No. Telefon
+        <label>Phone Number
           <input type="tel" placeholder="01x-xxxxxxx" />
         </label>
-        <label>Tarikh Event
+        <label>Event Date
           <input type="date" />
         </label>
-        <label>Jenis Cake
+        <label>Cake Type
           <select>
             <option>Birthday Cake</option>
             <option>Wedding Cake</option>
-            <option>Hantaran Cake</option>
+            <option>Gift Ceremony Cake</option>
             <option>Cupcake Set</option>
           </select>
         </label>
-        <button type="button" class="btn btn-main">Hantar Tempahan</button>
+        <button type="button" class="btn btn-main">Submit Order</button>
       </form>
     </section>
   </main>
