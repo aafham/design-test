@@ -34,20 +34,20 @@
 }
 
 html[data-theme="dark"] {
-  --bg-top: #0f1829;
-  --bg-mid: #15243f;
-  --bg-low: #123038;
+  --bg-top: #12223a;
+  --bg-mid: #173153;
+  --bg-low: #133e47;
 
   --text: #e9f2ff;
   --muted: #d2def0;
 
-  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.15);
   --glass-border: rgba(255, 255, 255, 0.18);
   --noise-ink: rgba(180, 208, 245, 0.5);
 
   --focus: rgba(120, 168, 255, 0.82);
   --line: rgba(173, 205, 255, 0.32);
-  --surface-strong: rgba(27, 46, 79, 0.84);
+  --surface-strong: rgba(36, 58, 95, 0.84);
 
   --shadow: 0 12px 28px rgba(4, 11, 25, 0.38);
   --shadow-hover: 0 18px 36px rgba(4, 11, 25, 0.52);
@@ -317,11 +317,15 @@ html[data-theme="dark"] .switch-thumb {
 }
 
 .hero {
-  padding: clamp(16px, 3vw, 24px);
+  position: relative;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 16px;
   align-items: start;
+}
+
+.hero-copy {
+  padding: clamp(16px, 3vw, 24px);
 }
 
 .liquid-lens {
@@ -347,8 +351,8 @@ html[data-theme="dark"] .switch-thumb {
 
 .hero h1 {
   margin: 8px 0;
-  line-height: 1.05;
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.08;
+  font-size: clamp(1.86rem, 3.5vw, 2.9rem);
   max-width: 13ch;
   letter-spacing: -0.01em;
 }
@@ -413,6 +417,7 @@ html[data-theme="dark"] .switch-thumb {
   padding: 12px;
   display: grid;
   gap: 10px;
+  align-self: start;
 }
 
 .shine {
@@ -501,7 +506,8 @@ html[data-theme="dark"] .switch-thumb {
 .cake-media img {
   width: 100%;
   border-radius: var(--radius-sm);
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/4;
+  max-height: 360px;
   object-fit: cover;
 }
 
@@ -599,6 +605,7 @@ html[data-theme="dark"] .switch-thumb {
 .trust article p {
   margin: 0;
   color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .testimonials {
@@ -621,6 +628,7 @@ html[data-theme="dark"] .switch-thumb {
 .review p {
   margin: 0;
   color: color-mix(in srgb, var(--text) 84%, var(--muted));
+  line-height: 1.58;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -639,6 +647,7 @@ html[data-theme="dark"] .switch-thumb {
 
 .order {
   padding: 18px;
+  margin-bottom: 68px;
 }
 
 form {
