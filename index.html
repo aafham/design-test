@@ -37,8 +37,14 @@
       <a href="#order">Order</a>
     </nav>
     <div class="top-actions">
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">Dark Mode</button>
-      <button class="chip">Open 10AM-9PM</button>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+        <span class="switch-icon switch-sun" aria-hidden="true">&#9728;</span>
+        <span class="switch-track" aria-hidden="true">
+          <span class="switch-thumb"></span>
+        </span>
+        <span class="switch-icon switch-moon" aria-hidden="true">&#9790;</span>
+      </button>
+      <button class="chip">Open 10:00 AM - 9:00 PM</button>
     </div>
   </header>
 
@@ -91,7 +97,7 @@
           <div><span>RM 98</span><small>Popular</small></div>
         </article>
         <article class="cake glass mini-liquid">
-          <img src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?auto=format&fit=crop&w=700&q=80" alt="Midnight Choco" />
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" alt="Midnight Choco" />
           <h3>Midnight Choco</h3>
           <p>Dark cocoa sponge, Belgian ganache, and sea salt finish.</p>
           <div><span>RM 110</span><small>Chef Pick</small></div>
@@ -124,7 +130,7 @@
           <input type="text" placeholder="Your full name" />
         </label>
         <label>Phone Number
-          <input type="tel" placeholder="01x-xxxxxxx" />
+          <input type="tel" placeholder="+60 1X-XXXX XXX" />
         </label>
         <label>Event Date
           <input type="date" />

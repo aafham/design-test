@@ -18,7 +18,9 @@ const getPreferredTheme = () => {
 const applyTheme = (theme) => {
   root.setAttribute("data-theme", theme);
   if (toggle) {
-    toggle.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+    const isDark = theme === "dark";
+    toggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
   }
 };
 
@@ -32,11 +34,11 @@ const playThemeTransition = (nextTheme) => {
 
   window.setTimeout(() => {
     applyTheme(nextTheme);
-  }, 105);
+  }, 165);
 
   window.setTimeout(() => {
     themeFade.classList.remove("is-active");
-  }, 365);
+  }, 560);
 };
 
 applyTheme(getPreferredTheme());
