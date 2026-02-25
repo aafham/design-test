@@ -944,9 +944,20 @@ html[data-theme="dark"] .field-hint {
     width: min(1180px, calc(100% - 16px));
   }
 
+  body {
+    line-height: 1.48;
+  }
+
+  main {
+    gap: var(--s-24);
+    margin-top: var(--s-16);
+  }
+
   .topbar {
     flex-wrap: wrap;
     row-gap: var(--s-8);
+    padding: var(--s-8);
+    border-radius: var(--r-lg);
   }
 
   .primary-nav {
@@ -954,10 +965,46 @@ html[data-theme="dark"] .field-hint {
     justify-content: center;
     order: 3;
     flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .primary-nav a {
+    padding: 7px 10px;
+    font-size: 0.82rem;
   }
 
   .top-actions {
     margin-left: auto;
+    gap: 6px;
+  }
+
+  .theme-switch {
+    min-width: 92px;
+    height: 34px;
+    padding-inline: 6px;
+  }
+
+  .switch-track {
+    width: 38px;
+    height: 20px;
+  }
+
+  .switch-thumb {
+    width: 16px;
+    height: 16px;
+  }
+
+  html[data-theme="dark"] .switch-thumb {
+    transform: translateX(18px);
+  }
+
+  .brand p {
+    display: none;
+  }
+
+  .brand strong {
+    font-size: 0.84rem;
   }
 
   .chip {
@@ -975,9 +1022,93 @@ html[data-theme="dark"] .field-hint {
     width: 100%;
   }
 
+  .hero {
+    gap: var(--s-12);
+  }
+
+  .hero-copy {
+    padding: var(--s-16);
+  }
+
+  .hero h1 {
+    font-size: clamp(1.75rem, 9.2vw, 2.2rem);
+    max-width: none;
+  }
+
+  .hero-copy > p,
+  .stats-line {
+    font-size: 0.86rem;
+  }
+
+  .liquid-lens {
+    width: 160px;
+    right: -48px;
+    top: -42px;
+    opacity: 0.72;
+  }
+
+  .feature-card {
+    padding: var(--s-8);
+    gap: var(--s-8);
+  }
+
+  .feature-card img {
+    aspect-ratio: 4 / 3;
+    max-height: 260px;
+  }
+
+  .feature-meta {
+    padding: 10px;
+  }
+
+  .feature-actions {
+    padding-inline: 2px;
+  }
+
+  .feature-actions a {
+    font-size: 0.82rem;
+  }
+
   .signature {
     flex-direction: column;
     align-items: flex-start;
+    padding: var(--s-16);
+  }
+
+  .signature h2 {
+    font-size: 1.3rem;
+    line-height: 1.16;
+  }
+
+  .menu-grid {
+    gap: 10px;
+  }
+
+  .cake {
+    padding: var(--s-8);
+    gap: var(--s-8);
+  }
+
+  .cake-media img {
+    aspect-ratio: 4 / 3;
+    max-height: 220px;
+  }
+
+  .cake h3 {
+    font-size: 0.96rem;
+  }
+
+  .cake p {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .cake span {
+    font-size: 1rem;
+  }
+
+  .cake div {
+    padding: 6px 8px;
   }
 
   .whatsapp-float {
@@ -987,12 +1118,47 @@ html[data-theme="dark"] .field-hint {
   .whatsapp-mobile {
     display: inline-flex;
     justify-content: center;
+    left: auto;
+    right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: auto;
+    min-width: 126px;
+    height: 38px;
+    min-height: 38px;
+    padding-inline: 14px;
+    font-size: 0.84rem;
+    border-radius: var(--r-pill);
+    box-shadow: 0 10px 20px rgba(24, 81, 190, 0.34);
   }
 
   .toast {
     left: 10px;
-    right: 10px;
-    bottom: calc(66px + env(safe-area-inset-bottom));
+    right: auto;
+    max-width: min(74vw, 280px);
+    bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .order {
+    padding: var(--s-16);
+    margin-bottom: calc(78px + env(safe-area-inset-bottom));
+  }
+
+  .order .section-head p {
+    font-size: 0.84rem;
+  }
+
+  .order form {
+    gap: 10px;
+  }
+
+  .order input,
+  .order select,
+  #submitOrderBtn {
+    min-height: 46px;
+  }
+
+  #submitOrderBtn {
+    font-size: 0.95rem;
   }
 }
 
